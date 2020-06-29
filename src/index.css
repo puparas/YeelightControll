@@ -1,0 +1,257 @@
+body {
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; */
+    font: caption;
+    margin: auto;
+    max-width: 38rem;
+    padding: 2rem 1rem;
+    color: #000;
+}
+.lightElement{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    font-size: 14px;
+    margin-bottom: 23px;
+}
+.lightElement.disabled{
+      pointer-events: none;
+}
+.onOff>img{
+    background: #a7a7a780;
+    border-radius: 50%;
+    width: 100%;
+    cursor: pointer;
+}
+.power {
+    width: 13px;
+    height: 13px;
+    margin-left: 5px;
+}
+.light{
+    font-weight: 700;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightStatus{
+
+    text-align: right;
+    padding: 10px 20px;
+}
+.color_value{
+  font-weight: 600;
+}
+span.colorPiker {
+    height: 12px;
+    border: 1px solid #000;
+    width: 12px;
+    border-radius: 50%;
+    margin: 0px 6px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+span.colorPiker>input {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    height: 7px;
+    left: 0px;
+    width: 5px;
+}
+span.paramName {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+}
+
+span.paramName {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.modes {
+    margin-top: 19px;
+    justify-content: space-around;
+    display: flex;
+}
+.switchDiv {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.switchDiv p{
+    margin: 0px;
+    margin-bottom: 3px;
+}
+
+/* Инпуты range */
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 300px;
+  height: 5px;
+  padding: 0;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-border-radius: 5px;
+  /*16x16px adjusted to be same as 14x14px on moz*/
+  height: 16px;
+  width: 16px;
+  border-radius: 5px;
+  background: #e7e7e7;
+  border: 1px solid #c5c5c5;
+}
+
+.brightCounter, .CtCounter{
+  border: none;
+}
+
+/* Инпуты переключатели */
+.switch {
+    display: inline-block;
+    height: 15px;
+    position: relative;
+    width: 28px;
+}
+
+.switch input {
+  display:none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 2px;
+    content: "";
+    height: 11px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 11px;
+}
+
+input:checked + .slider {
+  background-color: #66bb6a;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+input:checked + .slider:before {
+  transform: translateX(10px);
+}
+label.textarea{
+    margin-top: 10px;
+    width: 100%;
+    display: block;
+}
+.textarea textarea{
+    width: 85%;
+    display: block;
+    margin: auto;
+}
+.colorFlowForm {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-around;
+}
+.colorFlowForm label:not(.textarea){
+    width: 40%;
+    font-size: 12px;
+    text-align: center;
+}
+.colorFlowForm input{
+    width: 20px;
+    display: block;
+    text-align: center;
+    margin: auto;
+    margin-top: 8px;
+    border-radius: 2px;
+    border: 1px solid #fafafa;
+}
+.colorFlowForm>label>span{
+    background: #da0202;
+    color: #fff;
+    padding: 0px 3px;
+    border-radius: 10px;
+}
+.label {
+    height: auto;
+    min-height: 22px;
+    display: block;
+    margin-top: 5px;
+    border-radius: 2px;
+    border: 1px solid #fafafa;
+    width: 100%;
+}
+.textarea {
+    padding: 5px;
+    text-align: left;
+}
+.textarea span:nth-child(1n) {
+    color: #ce0303;
+    font-weight: 600;
+}
+.textarea span:nth-child(2n) {
+    color: #0b1486;
+    font-weight: 600;
+}
+.textarea span:nth-child(3n) {
+    color: #059e09;
+    font-weight: 600;
+}
+.textarea span:nth-child(4n) {
+    color: #c7d405;
+    font-weight: 600;
+}
+.textarea:before {
+    content: '[';
+    margin-right: 5px;
+    float: left;
+    display: inline-block;
+    color: #b7b7b7;
+}
+.textarea:after {
+    content: ']';
+    float: right;
+    margin-left: 5px;
+    display: inline-block;
+    color: #b7b7b7;
+}
+
+.button_cf_start {
+    background: #dedada;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
