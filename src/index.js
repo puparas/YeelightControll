@@ -75,8 +75,10 @@ function addListeners(el){
 
     el.querySelector('.textarea').addEventListener('keyup', (e) => {
         if (e.key.length>1) return false
-        let value = e.target.innerText
-        value = value.match(/([0-9]),? ?/gi).filter(Boolean).join('')
+        let deviceNode = e.target.closest('.lightElement')
+        let deviceId = deviceNode.id
+        let rawtext = e.target.innerText
+        let value = rawtext.match(/([0-9]),? ?/gi).filter(Boolean).join('')
         if (!(e.key % 1 == 0) && e.key != ','){
             if (value){
                 value = formatInput(value)
@@ -92,9 +94,7 @@ function addListeners(el){
             e.target.innerHTML = value
             placeCaretAtEnd(e.target)
         }
-
-        if (value % 4 == 0){
-
+        if (rawtext.split(',').filter(Boolean).length % 4 == 0){
             e.target.dataset.valid = 'true'
         }else{
             e.target.dataset.valid = 'false'
@@ -105,7 +105,9 @@ function addListeners(el){
         let button = e.target
         let valid = button.closest('.lightElement').querySelector('.textarea').dataset.valid
         if(valid == 'true'){
-            console.log('valid')
+            // {"id":1,"method":"start_cf","params":[ 4, 2, "1000, 2, 2700, 100, 500, 1,
+            //     255, 10, 5000, 7, 0,0, 500, 2, 5000, 1"]}
+            sendTestCommand(deviceId, {"id":200,"method":"flow_expression", "params":[ 4, 2, "1000, 2, 2700, 100, 500, 1,255, 10, 5000, 7, 0,0, 500, 2, 5000, 1"]})
         }
         console.log(button, valid)
 
