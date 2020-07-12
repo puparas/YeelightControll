@@ -52,7 +52,7 @@ function emitersHang(device){
     mainWindow.webContents.send('add', device.device)
     devices[id] = device
     devicesResStore.addDevice(id, device.device)
-    console.log(device.device.name);
+
     contextMenuItems.push({
       label: device.device.name , click: () => {
         sendCommand([ id, 'toggle'])
@@ -83,7 +83,7 @@ function connectToSaved() {
 
 // Отправляем команду на измнение параметров
 function sendCommand(params, effect = 'smooth', duration = 500) {
-  console.log(params)
+
   if (Array.isArray(params[2])){
     devices[params[0]].sendCommand({
       id: 200,
@@ -130,7 +130,7 @@ function main() {
     discover.on('didDiscoverDevice', (deviceRes) => {
       if (!devices[deviceRes.id]) {
         connectToDevice(deviceRes);
-      }
+      }connectToDevice
     })
     discover.listen()
   })
@@ -165,7 +165,7 @@ function main() {
   })
   // Отправка команды напрямую из инпута с морды. Параметры должны быть в форма  {"id":200,"method":"set_default","params":[]}
   ipcMain.on('sendTestCommand', (event, params) => {
-    console.log(params[1]);
+
     devices[params[0]].sendCommand(params[1])
   })
 

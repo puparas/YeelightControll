@@ -4,7 +4,7 @@ const { ipcRenderer, desktopCapturer } = require('electron')
 const FastAverageColor = require('fast-average-color')
 const elPrefix = "lightElement_"
 const modsList = ['ambilight']
-const Vibrant = require('node-vibrant')
+// const Vibrant = require('node-vibrant')
 const fac = new FastAverageColor()
 
 const timers = []
@@ -261,7 +261,7 @@ function stopAmbilight(deviceId){
 }
 
 function startAmbilight(sourceId, deviceId){
-
+    console.log(sourceId)
     timers[deviceId] = setInterval(()=>{
         desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
             for (const source of sources) {
@@ -270,22 +270,9 @@ function startAmbilight(sourceId, deviceId){
                     let bufferRaw = source.thumbnail.getBitmap()
                     const color1 = fac.getColorFromArray4(bufferRaw, {
                         'algorithm': 'dominant'
-                    });
-                    let vibrant = new Vibrant(bufferJpg, {})
-                    vibrant.getPalette().then((palette) => {
-                        if (document.querySelector('.colorAverege').checked){
-                            let colortest = [(color1[2] + palette.Vibrant.rgb[0]) / 2, (color1[1] + palette.Vibrant.rgb[1]) / 2, (color1[0] + palette.Vibrant.rgb[2]) / 2]
-                            sendCommand(false, deviceId, 'set_hsv', colortest, 'smooth', 800)
-                        }else if (document.querySelector('.colorTest').checked){
+                    })
+                    sendCommand(false, deviceId, 'set_hsv', [color1[2], color1[1], color1[0]], 'smooth', 800)
 
-                            sendCommand(false, deviceId, 'set_hsv', palette.Vibrant.rgb, 'smooth', 800)
-                        }else{
-
-                            sendCommand(false, deviceId, 'set_hsv', [color1[2], color1[1], color1[0]], 'smooth', 800)
-
-                        }
-
-                    });
                 }
             }
         })
