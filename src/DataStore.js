@@ -25,20 +25,19 @@ class DataStore extends Store {
   }
 
   getDeviceById(id) {
-
-    return this.get('devices')[id]
+    return this.devices[id]
   }
 
-  addDevice (id, Device) {
-    // merge the existing devices with the new Device
-    this.devices[id] = Device
+  addDevice (device) {
+    let id = device.id
+    this.devices[id] = device
     return this.saveDevices()
   }
 
   deleteDevice (Device) {
     // filter out the target Device
-    this.devices = this.devices.filter(t => t !== Device)
-
+    this.devices = Object.keys(this.devices).filter(t => {if(t !== Device.id){return this.devices.t}})
+    console.log(this.devices)
     return this.saveDevices()
   }
 }

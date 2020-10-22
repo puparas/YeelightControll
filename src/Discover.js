@@ -2,9 +2,6 @@ const EventEmitter = require('events')
 const dgram = require('dgram')
 const url = require('url')
 
-
-
-
 const supportedHeaders = ['id', 'Location', 'power', 'bright', 'model', 'rgb', 'hue', 'sat', 'ct', 'color_mode', 'support']
 const options = {
     multicastAddres:  '239.255.255.250',
@@ -17,11 +14,6 @@ class YeeDiscovery extends EventEmitter{
         super()
         this.socket = dgram.createSocket('udp4')
         this.ids = []
-    }
-
-    discover(){
-        const buffer = Buffer.from(options.discoveryMsg)
-        this.socket.send(buffer, 0, buffer.length, options.multicastPort, options.multicastAddres)
     }
 
     listen(){
@@ -41,6 +33,10 @@ class YeeDiscovery extends EventEmitter{
             throw ex
         }
     }
+    discover(){
+        const buffer = Buffer.from(options.discoveryMsg)
+        this.socket.send(buffer, 0, buffer.length, options.multicastPort, options.multicastAddres)
+    }
     didDiscoverDevice(response) {
         const headers = response.toString().split('\r\n')
         var device = {}
@@ -57,6 +53,7 @@ class YeeDiscovery extends EventEmitter{
             const parsedUrl = url.parse(device.Location)
             device.host = parsedUrl.hostname
             device.port = parsedUrl.port
+            device.connected = 'false'
             this.emit('didDiscoverDevice', device)
         }
     }

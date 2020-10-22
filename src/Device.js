@@ -4,7 +4,7 @@ const net = require('net')
 class YeeDevice extends EventEmitter {
     constructor(device) {
         super()
-        device['mods'] = {}
+        device.mods = ['ambilight']
         this.device = device
         this.id = device.id
         this.debug = this.device.debug || false
@@ -19,13 +19,11 @@ class YeeDevice extends EventEmitter {
 
     connect() {
         try {
-
             this.forceDisconnect = false
             this.socket = new net.Socket()
             this.bindSocket()
             this.socket.connect({ host: this.device.host, port: this.device.port }, () => {
                 this.didConnect()
-                this.emit('connected', this)
                 this.getNewParams()
             })
 
@@ -40,7 +38,8 @@ class YeeDevice extends EventEmitter {
         clearInterval(this.timer)
         this.socket.destroy()
         this.socket = null
-        this.emit('disconnected', this.id)
+        this['device']['connected'] = false
+        this.emit('disconnected', this['device'])
         if (this.forceDisconnect && this.retry_timer) clearTimeout(this.retry_timer)
     }
 
@@ -87,8 +86,7 @@ class YeeDevice extends EventEmitter {
             clearInterval(this.timer)
             this.timer = null
         }
-        // this.sendHeartBeat.bind(this)
-        // this.timer = setInterval(this.sendHeartBeat.bind(this), this.polligInterval)
+
     }
 
     getNewParams() {
@@ -106,18 +104,19 @@ class YeeDevice extends EventEmitter {
             try {
                 const response = JSON.parse(dataString)
                 if (response.id == 199){
-                    response.params = {}
                     for (let [key, paramVal] of Object.entries(response.result)) {
-                        response.params[this.tracked_attrs[key]] = paramVal
+                        this.device[this.tracked_attrs[key]] = paramVal
                     }
+                    this.device.connected = true
+                    this.emit('DeviceResponse', this.device)
+                }else if(response.method == 'props'){
+                    this.device = {...this.device, ...response.params}
+                    this.emit('DeviceResponse', this.device, true)
+                }else if(response.id == 200){
+
+                }else{
+                    this.emit('DeviceResponseError', response)
                 }
-                if (response.id == 666){
-                    console.log(response)
-                }
-                if (response.params){
-                    response.params.id = this.id
-                }
-                this.emit('deviceUpdate', response)
             } catch (err) {
                 console.log(err, dataString)
             }
@@ -126,7 +125,6 @@ class YeeDevice extends EventEmitter {
 
     sendCommand(data) {
         const cmd = JSON.stringify(data)
-
         if (this.connected && this.socket) {
             try {
                 this.socket.write(cmd + '\r\n')
@@ -136,9 +134,7 @@ class YeeDevice extends EventEmitter {
         }
     }
 
-    updateDevice(device) {
-        this.device = device
-    }
+
 }
 
 module.exports = YeeDevice
