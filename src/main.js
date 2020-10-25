@@ -44,6 +44,10 @@ let main = () => {
 
     return false;
   });
+
+  require('electron').powerMonitor.on('resume', () => {
+    main();
+  });
 }
 
 //Функция подключения к девайсу
@@ -95,6 +99,9 @@ const emitersHangDevice = (device) => {
     console.log('disconnected')
     tray.destroy()
   })
+  require('electron').powerMonitor.on('suspend', () => {
+    device.disconnect()
+  });
 }
 
 //Функция поиска девайсов
@@ -121,6 +128,8 @@ const frontSend = (data = {}, event = 'updateDevice') => {
 
 //Жизненный цикл приложения
 app.on('ready', main);
+
+
 
 app.on('activate', () => {
 
